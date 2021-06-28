@@ -144,15 +144,20 @@ grade <- data.frame(names, score)
 
 grade$score 
 grade[,2] # these two are the same. calls second column of the dataframe
+
 rich <- data.frame(name = c("Jeff Bezos", "Bernard Arnault", "Elon Musk", "Bill Gates", "Mark Zuckerberg"), 
                    worth_billion = c(188.3, 188.0, 151.3, 126.5, 118.5), 
                    age = c(57, 72, 49, 65, 37), 
                    source = c("Amazon", "LVMH", "Tesla, SpaceX", "Microsoft", "Facebook"),
                    country = factor(c("United States", "France", "United States", "United States", "United States")))
 
-twomore <- data.frame(name = c("Warren Buffett", "Larry Page"), worth_billion = c(109.4, 103.0), age = c(90, 48), source = c("Berkshire Hathaway", "Google"), country = factor(c("United States", "United States")))
+twomore <- data.frame(name = c("Warren Buffett", "Larry Page"), 
+                      worth_billion = c(109.4, 103.0), 
+                      age = c(90, 48), 
+                      source = c("Berkshire Hathaway", "Google"), 
+                      country = factor(c("United States", "United States")))
 rich <- rbind(rich, twomore) # this adds new rows
-rich
+
 education <- factor(c("Princeton University", "Ecole Polytechnique", "University of Pennsylvania", "Harvard University", "Harvard University", "Columbia Business School", "Stanford University")) # create new vectors
 rich <- cbind(rich, education) # this combines new column
 str(rich)
@@ -230,9 +235,6 @@ grade %>%
 
 
 
-
-
-
 ####List
 list is something you can store many things (matrices, vectors in a same place)
 list is special in a sense that it can store different kinds of class of objects (not like vector, created with c())
@@ -266,7 +268,7 @@ list2[[1]]
 mean, median, mode, range, quantile, IQR
 ```{r}
 xdata <- c(1,3,4,5,6,6,6,8,9,12,NA)
-xdata
+
 as.numeric(names(which.max(table(xdata)))) # getting mode
 median(xdata, na.rm = TRUE)
 mean(xdata, na.rm = TRUE)
@@ -275,6 +277,7 @@ xdata2 # removing 10th value (12) and adding 35 at the last
 mean(xdata2, na.rm = TRUE)
 median(xdata2, na.rm = TRUE)
 range(xdata2, na.rm = TRUE)
+
 quantile(xdata2, probs = c(0.25, 0.75), na.rm = TRUE) # 25% and 75% value
 quantile(xdata2, prob = seq(0,1,0.2), na.rm = TRUE) # all the percentile from 0% to 100% in 20% interval :)
 IQR(xdata2, na.rm = TRUE)
@@ -300,7 +303,6 @@ sim_unfair_coin <- sample(coin_outcomes, size = 100, replace = TRUE, prob = c(0.
 table(sim_unfair_coin) # you can see that in this case, we got only 15 heads because I specified the probability of success(heads) as 0.1 probability.
 
 
-
 ```
 
 
@@ -309,13 +311,14 @@ table(sim_unfair_coin) # you can see that in this case, we got only 15 heads bec
 
 
 ####Probability
-#####pnorm, qnorm, rnorm, dnorm, replicate
+#####Normal distribution
+pnorm, qnorm, rnorm, dnorm, replicate
 ```{r}
 #pnorm = probability of observing a particular value 
 pnorm(7, 11.2, 2.8) # pnorm(observation, mean, sd). observing 7 when the mean is 11.28 and sd is 2.8
-pnorm(15, 11.2, 2.8, lower.tail = FALSE) # this sets upper value since 15 is more than the mean
+pnorm(15, 11.2, 2.8, lower.tail = FALSE) # this calculates upper value since 15 is more than the mean
 
-#qnorm = what is the value of particular percentile?
+#qnorm = what is the value of particular percentile, i.e. quantile?
 qnorm(0.2, 11.2, 2.8) # qnorm(proportion, mean, sd). what is the value at 20% when the mean is 11.28 and sd is 2.8.
 qnorm(0.2, 11.2, 2.8, lower.tail = FALSE) # upper = 80%
 qnorm(0.8, 11.2, 2.8) # this is the same as the above line
@@ -338,36 +341,6 @@ ggplot(data = iq.df, aes(x=sample.distribution, y=distribution)) +
   geom_point()
 sum(iq.df$distribution) # almost 100%
 ```
-```{r}
-# gamma(4) = (4-1)! = 3*2*1 = 6
-gamma(4)
-
-
-# Poisson ‘Pois(k = 1, lambda = 2)‘
-dpois(1, lambda = 2)
-
-# Beta ‘Beta(x = 0.5, alpha = 2, beta = 3)‘
-dbeta(0.5, shape1 = 2, shape2 = 3)
-
-# Gamma ‘Gamma(x = 1, k = 2, theta = 3)‘
-dgamma(1, shape = 2, scale = 3)
-
-# Gamma ‘Gamma(x = 1, alpha = 2, beta = 3)
-dgamma(1, shape = 2, rate = 3)
-
-```
-
-
-####set seed, 
-```{r}
-
-rnorm()
-
-?set.seed
-```
-
-
-
 
 
 
@@ -405,6 +378,10 @@ prob = 1 - dbinom(0, 5, 0.1)
 prob
 ```
 
+
+
+
+
 ####Bayesian inference
 ```{r}
 # let's see the probability of 4 women getting pregnant among the 20 women who have been assigned morning after pill.
@@ -421,6 +398,27 @@ denominator <- sum(numerator)
 posterior <- numerator/denominator
 posterior
 
+
+```
+
+
+### Conjugate family
+```{r}
+# gamma(4) = (4-1)! = 3*2*1 = 6
+gamma(4)
+
+
+# Poisson ‘Pois(k = 1, lambda = 2)‘
+dpois(1, lambda = 2)
+
+# Beta ‘Beta(x = 0.5, alpha = 2, beta = 3)‘
+dbeta(0.5, shape1 = 2, shape2 = 3)
+
+# Gamma ‘Gamma(x = 1, k = 2, theta = 3)‘
+dgamma(1, shape = 2, scale = 3)
+
+# Gamma ‘Gamma(x = 1, alpha = 2, beta = 3)
+dgamma(1, shape = 2, rate = 3)
 
 ```
 
